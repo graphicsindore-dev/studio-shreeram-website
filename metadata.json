@@ -1,0 +1,8 @@
+
+{
+  "name": "Shreeram Advertising - Legacy Builder",
+  "description": "A high-end, animated creative agency website with AI-powered messaging features.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
