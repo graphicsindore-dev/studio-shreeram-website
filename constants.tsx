@@ -98,8 +98,8 @@ export const CLIENT_LOGOS = [
   'assets/logo-sbpl.png',
   'assets/logo-topntown.png',
   'assets/logo-windsor.png',
-  'assets/logo-amrithome.png',
-  'assets/logo-autohangers.png'
+  'assets/logo-amrithomes.png',
+  'assets/logo-autohanger.png'
 ];
 
 // Creative portfolio from brand1.jpg to brand8.jpg
