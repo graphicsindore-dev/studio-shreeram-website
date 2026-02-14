@@ -1,11 +1,11 @@
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PROJECTS } from '../constants';
 import { Project } from '../types';
 
 const Work: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const scrollPosition = useRef(0);
 
   const closeProject = useCallback(() => {
     setSelectedProject(null);
@@ -20,19 +20,34 @@ const Work: React.FC = () => {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [closeProject]);
 
-  // Handle body scroll lock with padding correction to prevent "jump"
+  // ✅ Stable scroll lock (no flicker / no jump)
   useEffect(() => {
+    const html = document.documentElement;
+
     if (selectedProject) {
-      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${scrollBarWidth}px`;
+      scrollPosition.current = window.scrollY;
+
+      html.style.position = 'fixed';
+      html.style.top = `-${scrollPosition.current}px`;
+      html.style.left = '0';
+      html.style.right = '0';
+      html.style.width = '100%';
     } else {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      html.style.position = '';
+      html.style.top = '';
+      html.style.left = '';
+      html.style.right = '';
+      html.style.width = '';
+
+      window.scrollTo(0, scrollPosition.current);
     }
+
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      html.style.position = '';
+      html.style.top = '';
+      html.style.left = '';
+      html.style.right = '';
+      html.style.width = '';
     };
   }, [selectedProject]);
 
@@ -66,8 +81,12 @@ const Work: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
             
             <div className="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-              <span className="text-blue-400 font-bold text-xs uppercase tracking-widest mb-2 block">{project.category}</span>
-              <h3 className="text-white text-2xl font-black mb-4">{project.title}</h3>
+              <span className="text-blue-400 font-bold text-xs uppercase tracking-widest mb-2 block">
+                {project.category}
+              </span>
+              <h3 className="text-white text-2xl font-black mb-4">
+                {project.title}
+              </h3>
               <div className="flex items-center gap-2 text-white/70 group-hover:text-white transition-colors">
                 <span className="text-sm font-bold uppercase">View Project</span>
                 <i className="fas fa-chevron-right text-xs"></i>
@@ -83,7 +102,7 @@ const Work: React.FC = () => {
         </button>
       </div>
 
-      {/* High-Resolution Project Details Lightbox */}
+      {/* Lightbox Modal */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
@@ -93,23 +112,22 @@ const Work: React.FC = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[2000] bg-slate-950/98 backdrop-blur-3xl flex items-center justify-center"
           >
-            {/* 
-                Close Controls Layer: 
-                This sits behind the scrolling content but captures clicks on the background 
-            */}
+            {/* Background click layer */}
             <div 
               className="absolute inset-0 cursor-zoom-out" 
               onClick={closeProject} 
             />
 
-            {/* Fixed Navigation/Controls: Always on Top */}
+            {/* Top controls */}
             <div className="fixed top-0 left-0 w-full z-[2050] p-6 md:p-10 flex justify-between items-center pointer-events-none">
               <motion.div 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="bg-white/10 backdrop-blur-xl px-6 py-3 rounded-full border border-white/10 hidden md:block"
               >
-                <h3 className="text-white font-black text-sm uppercase tracking-[0.2em]">{selectedProject.title}</h3>
+                <h3 className="text-white font-black text-sm uppercase tracking-[0.2em]">
+                  {selectedProject.title}
+                </h3>
               </motion.div>
 
               <motion.button 
@@ -125,7 +143,7 @@ const Work: React.FC = () => {
               </motion.button>
             </div>
 
-            {/* Scrolling Image Container */}
+            {/* Scrollable content */}
             <div className="absolute inset-0 overflow-y-auto custom-scrollbar">
               <div className="min-h-screen flex flex-col items-center py-20 md:py-32 px-4 md:px-0">
                 <motion.div
@@ -134,7 +152,7 @@ const Work: React.FC = () => {
                   exit={{ scale: 0.95, opacity: 0, y: 50 }}
                   transition={{ type: "spring", damping: 30, stiffness: 200, mass: 0.8 }}
                   className="w-full max-w-5xl bg-white rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] mb-20 relative"
-                  onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image itself
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <img 
                     src={selectedProject.detailsImage} 
@@ -144,7 +162,6 @@ const Work: React.FC = () => {
                   />
                 </motion.div>
                 
-                {/* Visual indicator that user has reached the end */}
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

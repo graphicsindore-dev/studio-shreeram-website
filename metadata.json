@@ -1,7 +1,17 @@
-
 {
-  "name": "Shreeram Advertising - Legacy Builder",
-  "description": "A high-end, animated creative agency website with AI-powered messaging features.",
+  "name": "Studio Shreeram | Leading Advertising Agency in Indore",
+  "description": "Studio Shreeram is a premier 360° creative agency in Indore specializing in Print Media, TV ads, Radio, OOH, and Digital Marketing. Building timeless legacies for 20+ years.",
+  "keywords": [
+    "Advertising Agency in Indore",
+    "Creative Studio Indore",
+    "Digital Marketing Services Indore",
+    "Branding and Positioning",
+    "Print Media Advertising",
+    "Best Ad Agency Madhya Pradesh",
+    "Shreeram Advertising & Marketing"
+  ],
+  "author": "Studio Shreeram",
+  "og:image": "assets/hero-bg.png",
   "requestFramePermissions": [
     "geolocation"
   ]
