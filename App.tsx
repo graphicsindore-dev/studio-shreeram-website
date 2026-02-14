@@ -48,7 +48,7 @@ const App: React.FC = () => {
   if (!isLoaded) return null;
 
   return (
-    <div className="relative min-h-screen cursor-none selection:bg-blue-600 selection:text-white bg-[#fcfdfe]">
+    <div className="relative min-h-screen selection:bg-blue-600 selection:text-white bg-[#fcfdfe]">
       <CustomCursor />
       
       <motion.div
