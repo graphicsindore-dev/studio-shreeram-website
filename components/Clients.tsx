@@ -1,24 +1,19 @@
-
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { CLIENT_LOGOS } from '../constants';
 
 const Clients: React.FC = () => {
-  // Triple the logos to ensure a seamless infinite loop
+
   const duplicatedLogos = [...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS];
 
-  // Added Variants type annotation for proper property inference
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.05
-      }
+      transition: { staggerChildren: 0.05 }
     }
   };
 
-  // Added Variants type annotation to fix the 'ease' property type error
   const itemVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8, y: 10 },
     visible: { 
@@ -37,7 +32,9 @@ const Clients: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400 mb-4">Empowering Leading Brands</h3>
+          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400 mb-4">
+            Empowering Leading Brands
+          </h3>
           <div className="h-1 w-16 bg-blue-600 mx-auto rounded-full opacity-30"></div>
         </motion.div>
       </div>
@@ -52,12 +49,12 @@ const Clients: React.FC = () => {
         <div className="animate-marquee flex items-center gap-16 py-4">
           {duplicatedLogos.map((logo, i) => (
             <motion.img 
-              key={i} 
+              key={i}
               variants={itemVariants}
-              src={logo} 
-              alt="Client Logo" 
+              src={logo}
+              alt="Client Logo"
               loading="lazy"
-              className="h-10 md:h-12 w-auto grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer object-contain flex-shrink-0 hover:scale-110"
+              className="h-10 md:h-12 w-auto grayscale opacity-40 transition-all duration-500 object-contain flex-shrink-0 md:hover:grayscale-0 md:hover:opacity-100 md:hover:scale-110"
             />
           ))}
         </div>
