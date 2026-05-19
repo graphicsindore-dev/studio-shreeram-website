@@ -1,10 +1,8 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoogleGenAI, GenerateContentResponse } from '@google/genai';
 
 interface Message {
-  role: 'user' | 'model';
+  role: 'user' | 'assistant';
   text: string;
 }
 
@@ -12,7 +10,7 @@ const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Hi! I’m your Shreeram Assistant. How can I help build your brand legacy today?' }
+    { role: 'assistant', text: 'Hi! I\'m your Shreeram Assistant. How can I help build your brand legacy today?' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -31,42 +29,52 @@ const Chatbot: React.FC = () => {
     setMessages(prev => [...prev, { role: 'user', text: userMessage }]);
     setIsTyping(true);
 
+    // Build history for Claude API (exclude the first welcome message)
+    const history = messages.slice(1).map(m => ({
+      role: m.role === 'user' ? 'user' : 'assistant',
+      content: m.text
+    }));
+
     try {
-      // API Key is automatically picked from the environment variable
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const chat = ai.chats.create({
-        model: 'gemini-3-flash-preview',
-        config: {
-          systemInstruction: 'You are a professional, creative, and helpful AI assistant for Shreeram Advertising. We are an agency founded in 2002 by 2 visionaries, now with 70+ experts. We specialize in Print Media, TV, Radio, OOH, and Online advertising. We have presence in Bhopal (HQ), Indore, Raipur, Gwalior, Jabalpur, and Mumbai. Keep your tone elite, concise, and focused on building brand legacies. If asked about pricing, suggest scheduling a call via the contact form.',
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
         },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-5',
+          max_tokens: 500,
+          system: `You are a professional, creative, and helpful AI assistant for Shreeram Advertising (also known as Studio Shreeram). 
+We are a premier 360° advertising agency founded in 2002, now with 70+ experts across Central India and Mumbai. 
+We specialize in Print Media, Television, Radio, OOH (Out-of-Home), and Online/Digital advertising.
+Our offices are in Bhopal (HQ), Indore, Raipur, Gwalior, Jabalpur, and Mumbai.
+Keep your tone elite, concise, and focused on building brand legacies. 
+If asked about pricing, suggest scheduling a call via the contact form on the website.
+Answer in 2-4 sentences max unless the user asks for detail.`,
+          messages: [
+            ...history,
+            { role: 'user', content: userMessage }
+          ]
+        })
       });
 
-      const responseStream = await chat.sendMessageStream({ message: userMessage });
+      const data = await response.json();
+      const replyText = data?.content?.[0]?.text ?? "I'm having trouble connecting right now. Please try our contact form!";
       
-      let fullResponse = '';
-      setMessages(prev => [...prev, { role: 'model', text: '' }]);
-
-      for await (const chunk of responseStream) {
-        const chunkText = (chunk as GenerateContentResponse).text;
-        if (chunkText) {
-          fullResponse += chunkText;
-          setMessages(prev => {
-            const newMsgs = [...prev];
-            newMsgs[newMsgs.length - 1].text = fullResponse;
-            return newMsgs;
-          });
-        }
-      }
+      setMessages(prev => [...prev, { role: 'assistant', text: replyText }]);
     } catch (error) {
-      console.error("Chatbot Error:", error);
-      setMessages(prev => [...prev, { role: 'model', text: "I'm having trouble connecting right now. Please try again or use our contact form!" }]);
+      console.error('Chatbot Error:', error);
+      setMessages(prev => [...prev, { role: 'assistant', text: "I'm having trouble connecting right now. Please try again or use our contact form!" }]);
     } finally {
       setIsTyping(false);
     }
   };
 
   return (
-    <div className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[1001]">
+    // ✅ Moved up: bottom-20 on mobile, bottom-24 on desktop — avoids overlap with Back-to-Top button
+    <div className="fixed bottom-20 right-6 md:bottom-24 md:right-10 z-[1001]">
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -84,7 +92,7 @@ const Chatbot: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-black text-base tracking-tight leading-none mb-1">Brand Assistant</h4>
-                  <p className="text-[10px] opacity-70 uppercase tracking-widest font-bold">Always Active</p>
+                  <p className="text-[10px] opacity-70 uppercase tracking-widest font-bold">Powered by Claude AI</p>
                 </div>
               </div>
               <button 
@@ -112,10 +120,23 @@ const Chatbot: React.FC = () => {
                       ? 'bg-blue-600 text-white rounded-tr-none' 
                       : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'
                   }`}>
-                    {msg.text || (isTyping && i === messages.length - 1 ? "Thinking..." : "")}
+                    {msg.text}
                   </div>
                 </motion.div>
               ))}
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="bg-white text-slate-400 border border-slate-100 rounded-[2rem] rounded-tl-none p-5 text-sm font-medium shadow-sm flex gap-1 items-center">
+                    <span className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                  </div>
+                </motion.div>
+              )}
             </div>
 
             {/* Input Area */}

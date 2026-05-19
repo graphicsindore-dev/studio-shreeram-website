@@ -115,40 +115,24 @@ const Hero: React.FC = () => {
           </motion.p>
 
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 }}
-            className="flex flex-wrap gap-6 justify-center"
-          >
-            <motion.a 
-              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(37,99,235,0.4)" }}
-              whileTap={{ scale: 0.95 }}
-              href="#work" 
-              className="bg-blue-600 text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl transition-all"
-            >
-              View Portfolios
-            </motion.a>
-            <motion.a 
-              whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
-              href="#contact" 
-              className="bg-white/5 backdrop-blur-md text-white border border-white/10 px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all"
-            >
-              Collaborate
-            </motion.a>
-          </motion.div>
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 1.2 }}
+  className="flex justify-center"
+>
+  <motion.a 
+    whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(37,99,235,0.4)" }}
+    whileTap={{ scale: 0.95 }}
+    href="#work" 
+    className="bg-blue-600 text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl transition-all"
+  >
+    View Portfolios
+  </motion.a>
+</motion.div>
         </motion.div>
       </div>
 
-      {/* Elegant Scroll Indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-      >
-        <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.4em]">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-blue-600 to-transparent"></div>
-      </motion.div>
+  
     </section>
   );
 };
