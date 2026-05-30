@@ -79,12 +79,6 @@ export const TEAM: TeamMember[] = [
   { name: 'Jaya Dixit', role: 'Social Media Executive', image: 'assets/team7.jpg' }
 ];
 
-export const AWARDS: Award[] = [
-  { title: 'Best Print Campaign', org: 'Dainik Bhaskar', year: '2023', image: 'assets/award-print-campaign.jpg' },
-  { title: 'Excellence in Regional Ads', org: 'Times of India', year: '2022', image: 'assets/award-regional-ads.jpg' },
-  { title: 'Radio Commercial of the Year', org: 'Radio City', year: '2021', image: 'assets/award-radio-commercial.jpg' }
-];
-
 // Saare logos jo aapke screenshot mein dikh rahe hain
 export const CLIENT_LOGOS = [
   'assets/logo-fairfield.png',
