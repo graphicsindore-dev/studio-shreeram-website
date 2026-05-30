@@ -75,7 +75,8 @@ export const TEAM: TeamMember[] = [
   { name: 'Kailash Jonwal', role: 'Creative Design Head', image: 'assets/team3.jpg' },
   { name: 'Aayush Patidar', role: 'Creative Designer', image: 'assets/team4.jpg' },
   { name: 'Parn Upadhyay', role: 'DM Executive', image: 'assets/team5.jpg' },
-  { name: 'Aakash Arya', role: 'Office Admin', image: 'assets/team6.jpg' }
+  { name: 'Aakash Arya', role: 'Office Admin', image: 'assets/team6.jpg' },
+  { name: 'Jaya Dixit', role: 'Social Media Executive', image: 'assets/team7.jpg' }
 ];
 
 export const AWARDS: Award[] = [
