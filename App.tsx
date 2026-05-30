@@ -8,7 +8,6 @@ import Work from './components/Work';
 import Services from './components/Services';
 import About from './components/About';
 import Presence from './components/Presence';
-import Recognition from './components/Recognition';
 import Testimonials from './components/Testimonials';
 import Team from './components/Team';
 import Contact from './components/Contact';
@@ -40,10 +39,6 @@ const App: React.FC = () => {
         <Hero />
         <Clients />
 
-        <Section id="work" className="bg-white">
-          <Work />
-        </Section>
-
         <Section id="services" className="bg-[#f8fafc]">
           <Services />
         </Section>
@@ -56,12 +51,12 @@ const App: React.FC = () => {
           <Presence />
         </Section>
 
-        <Section id="recognition" className="bg-white">
-          <Recognition />
-        </Section>
-
         <Section id="testimonials" className="bg-blue-600/[0.01]">
           <Testimonials />
+        </Section>
+
+       <Section id="work" className="bg-white">
+          <Work />
         </Section>
 
         <Section id="team" className="bg-white">

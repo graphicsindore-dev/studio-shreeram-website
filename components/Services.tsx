@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SERVICES } from '../constants';
@@ -9,12 +8,7 @@ const Services: React.FC = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
   const itemVariants = {
@@ -24,26 +18,17 @@ const Services: React.FC = () => {
 
   return (
     <div className="container mx-auto px-6">
-      <div className="flex flex-col lg:flex-row justify-between items-end gap-10 mb-20">
-        <div className="max-w-2xl">
-          <motion.span 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-blue-600 font-black uppercase tracking-[0.3em] text-sm mb-4 block"
-          >
-            Expertise Ecosystem
-          </motion.span>
-          <h2 className="text-5xl md:text-7xl font-black mb-0 leading-[1.1]">
-            Our Masterful <br /><span className="text-blue-600 font-script text-6xl md:text-8xl">Creative Suite</span>
-          </h2>
-        </div>
-        <p className="text-slate-500 text-xl max-w-sm mb-4 font-medium leading-relaxed">
-          From tangible prints to digital whispers, we master every medium with precision.
-        </p>
+
+      {/* Header — "Expertise Ecosystem" label and tagline REMOVED */}
+      <div className="mb-20">
+        <h2 className="text-5xl md:text-7xl font-black leading-[1.1]">
+          Our Masterful <br />
+          <span className="text-blue-600 font-script text-6xl md:text-8xl">Creative Suite</span>
+        </h2>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-16 items-start">
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -56,8 +41,8 @@ const Services: React.FC = () => {
               variants={itemVariants}
               onClick={() => setActiveTab(service.id)}
               className={`group w-full flex items-center justify-between p-7 rounded-[2rem] transition-all duration-500 ${
-                activeTab === service.id 
-                  ? 'bg-blue-600 text-white shadow-[0_25px_50px_-12px_rgba(37,99,235,0.4)] scale-[1.03]' 
+                activeTab === service.id
+                  ? 'bg-blue-600 text-white shadow-[0_25px_50px_-12px_rgba(37,99,235,0.4)] scale-[1.03]'
                   : 'bg-white hover:bg-slate-50 text-slate-700 border border-transparent hover:border-slate-100 shadow-sm'
               }`}
             >
@@ -78,14 +63,14 @@ const Services: React.FC = () => {
 
         <div className="lg:w-2/3 w-full bg-white p-10 md:p-20 rounded-[3rem] shadow-2xl border border-slate-50 relative overflow-hidden group min-h-[600px]">
           <div className="absolute top-0 right-0 w-80 h-80 bg-blue-100 rounded-full -mr-40 -mt-40 blur-[100px] opacity-40 group-hover:bg-blue-200 transition-colors"></div>
-          
+
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: "circOut" }}
+              transition={{ duration: 0.5, ease: 'circOut' }}
               className="relative z-10"
             >
               <div className="flex items-center gap-6 mb-10">
@@ -97,10 +82,10 @@ const Services: React.FC = () => {
               <p className="text-slate-600 text-2xl leading-relaxed mb-12 italic font-medium">
                 "{activeService?.description}"
               </p>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-16">
                 {activeService?.features.map((feature, i) => (
-                  <motion.div 
+                  <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -116,7 +101,7 @@ const Services: React.FC = () => {
               </div>
 
               <div className="flex flex-wrap items-center gap-8">
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-blue-600 transition-all shadow-xl"
